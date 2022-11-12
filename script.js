@@ -17,6 +17,8 @@ const constructUrl = (path) => {
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
   )}`;
 };
+console.log(atob("NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="))
+console.log(btoa("542003918769df50083a13c415bbc602"))
 
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
