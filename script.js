@@ -1,12 +1,9 @@
-"use strict";
+'use strict';
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector(".container");
-
-// TMD_BASE_URL / movie/{movieid} / credits?api-key=xxx & language=en-US
-//https://api.themoviedb.org/3/ movie/436270 /credits?api_key=542003918769df50083a13c415bbc602&language=en-US
 
 // Don't touch this function please
 const autorun = async () => {
@@ -20,27 +17,17 @@ const constructUrl = (path) => {
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
   )}`;
 };
-//console.log(atob("NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="))
-//console.log(btoa("542003918769df50083a13c415bbc602"))
 
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
-  const actorRes = await fetchActors(movie.id);
-  renderMovie(movieRes, actorRes);
+  renderMovie(movieRes);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
   const res = await fetch(url);
-  return res.json();
-};
-
-const fetchActors = async (id) => {
-  const url = constructUrl(`movie/${id}/credits`);
-  const res = await fetch(url);
-  //console.log(res.json())
   return res.json();
 };
 
@@ -68,7 +55,7 @@ const renderMovies = (movies) => {
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, actors) => {
+const renderMovie = (movie) => {
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
@@ -87,31 +74,8 @@ const renderMovie = (movie, actors) => {
         </div>
         </div>
             <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled">
-            </ul>
-        </div>`;
-  const actorList = document.getElementById("actors")
-  actorList.append(renderActors(actors))
+            <ul id="actors" class="list-unstyled"></ul>
+    </div>`;
 };
-
-const renderActors = (actors) =>  {
-    actors.cast.slice(0, 5).map((actor) => {
-    const actorDiv = document.createElement("ul");
-    actorDiv.innerHTML = `
-        <li>${actor.name}</li>
-        <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster">`;
-    actorDiv.addEventListener("click", () => {displaySingleActorPage();});
-    CONTAINER.appendChild(actorDiv);
-  });
-
-
-  const displaySingleActorPage = () => {
-    CONTAINER.innerHTML = `
-      <div class="row">
-          <div class="col-md-4">
-               <h1>welcome, you are in actor page</h1>
-          </div>`;
-  };
-}
 
 document.addEventListener("DOMContentLoaded", autorun);
